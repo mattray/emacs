@@ -19,16 +19,16 @@
 default['emacs']['24'] = false
 
 case node['platform']
-when "ubuntu","debian"
+when 'ubuntu','debian'
   if node['emacs']['24']
-    default['emacs']['packages'] = ["emacs24-nox"]
+    default['emacs']['packages'] = ['emacs24-nox']
   else
-    default['emacs']['packages'] = ["emacs23-nox"]
+    default['emacs']['packages'] = ['emacs23-nox']
   end
-when "redhat","centos","scientific","fedora","arch"
-  default['emacs']['packages'] = ["emacs-nox"]
-when "freebsd"
-  default['emacs']['packages'] = ["editors/emacs-nox11"]
+when 'redhat','centos','scientific','fedora','arch'
+  default['emacs']['packages'] = ['emacs-nox']
+when 'freebsd'
+  default['emacs']['packages'] = ['editors/emacs-nox11']
 else
-  default['emacs']['packages'] = ["emacs"]
+  default['emacs']['packages'] = ['emacs']
 end
