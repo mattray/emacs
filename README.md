@@ -46,6 +46,49 @@ Simply add `recipe[emacs]` to the run list of a base role that gets applied to a
 
 As this is an array you can append other emacs-related packages, such as to make configuration modes available.
 
+Resources/Providers
+===================
+
+Managing Packages
+-----------------
+
+This LWRP provides an easy way to manage additional [ELPA](http://www.emacswiki.org/emacs/ELPA) packages.
+
+# Actions
+
+- :add: installs the ELPA package
+- :remove: removes the ELPA package
+
+# Attribute Parameters
+
+- package: name attribute. The name of the package to install
+- archive: URL to download packages from
+- user: the user to install packages for
+- elpa: use the [GNU](http://elpa.gnu.org) repo from http://elpa.gnu.org/packages/ - value can be `true` or `false`, default `true`.
+- marmalade: use the [Marmalade](http://marmalade-repo.org) repo from http://marmalade-repo.org/packages/ - value can be `true` or `false`, default `false`.
+- melpa: use [Milkypostman’s Emacs Lisp Package Archive](http://melpa.milkbox.net) from http://melpa.milkbox.net/packages/ - value can be `true` or `false`, default `false`.
+
+# Examples
+
+```ruby
+#coffee-mode from elpa
+emacs_package "coffee-mode"
+```
+
+```ruby
+emacs_package "ac-helm" do
+  melpa true
+end
+```
+
+```ruby
+#remove coffee-mode
+emacs_package "nostinkingcoffee" do
+  package "coffee-mode"
+  action :remove
+end
+```
+
 License and Author
 ==================
 
