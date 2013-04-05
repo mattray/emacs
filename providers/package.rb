@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: apt
-# Provider:: repository
+# Cookbook Name:: emacs
+# Provider:: package
 #
-# Copyright 2010-2011, Opscode, Inc.
+# Copyright 2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,17 @@
 # limitations under the License.
 #
 
+version = Chef::Version.new(Chef::VERSION)
+use_inline_resources if version.major >= 11
+
 def whyrun_supported?
   true
 end
 
-
-
 action :add do
-  new_resource.updated_by_last_action(false)
+  unless node['emacs']['24']
+    Chef::Application.fatal!("emacs_package requires node['emacs']['24'] to be true.")
+  end
 
   # write out the .el file
   el_file = "(setq package-archives '("
@@ -36,33 +39,32 @@ action :add do
   el_file += "(package-refresh-contents)"
   el_file += "(package-install '#{new_resource.package})"
 
-# (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-#                            ("marmalade" . "http://marmalade-repo.org/packages/")
-#                            ("melpa" . "http://melpa.milkbox.net/packages/")))
-# (package-refresh-contents)
-# (package-install 'coffee-mode)
+  execute "emacs -batch -l #{Chef::Config[:file_cache_path]}/#{new_resource.package}.el" do
+    user new_resource.user
+    action :nothing
+  end
 
-  f = file "#{Chef::Config[:file_cache_path]}/#{new_resource.package}.el" do
+  file "#{Chef::Config[:file_cache_path]}/#{new_resource.package}.el" do
     owner new_resource.user
     mode 00644
     content el_file
     action :create
+    notifies :run, "execute[emacs -batch -l #{Chef::Config[:file_cache_path]}/#{new_resource.package}.el]"
   end
-
-  #emacs -batch -l /var/chef/cache/coffee-mode.el
-  execute "emacs -batch -l #{Chef::Config[:file_cache_path]}/#{new_resource.package}.el" do
-    user new_resource.user
-  end
-
-  #new_resource.updated_by_last_action(f.updated?)
 end
 
 action :remove do
-  #rm -rf ~/.emacs.d/elpa/coffee-mode-0.4.1/
-  # if ::File.exists?("/etc/apt/sources.list.d/#{new_resource.name}.list")
-  #   Chef::Log.info "Removing #{new_resource.name} repository from /etc/apt/sources.list.d/"
-  #   file "/etc/apt/sources.list.d/#{new_resource.name}.list" do
-  #     action :delete
-  #   end
-  # end
+  if new_resource.user == 'root'
+    Dir.chdir("/root/.emacs.d/elpa")
+  else
+    Dir.chdir("/home/#{new_resource.user}/.emacs.d/elpa")
+  end
+  # wildcard because version is unknown
+  dir = Dir.glob("#{new_resource.package}*")
+  unless dir.empty?
+    directory dir[0] do
+      recursive true
+      action :delete
+    end
+  end
 end
