@@ -34,3 +34,10 @@ node['emacs']['packages'].each do |pkg|
   end
 
 end
+
+node['emacs']['elpa'].each do |pkg|
+
+  emacs_package pkg do
+  end
+
+end
