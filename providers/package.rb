@@ -25,8 +25,8 @@ def whyrun_supported?
 end
 
 action :add do
-  unless node['emacs']['24']
-    Chef::Application.fatal!("emacs_package requires node['emacs']['24'] to be true.")
+  unless node['emacs']['install24']
+    Chef::Application.fatal!("emacs_package requires node['emacs']['install24'] to be true.")
   end
 
   # write out the .el file
