@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-if node['emacs']['24'] and node['platform'] == 'ubuntu'
+if node['emacs']['install24'] and node['platform'] == 'ubuntu'
   apt_repository 'ppa-cassou-emacs' do
     uri 'http://ppa.launchpad.net/cassou/emacs/ubuntu'
     distribution node['lsb']['codename']
