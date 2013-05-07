@@ -16,11 +16,11 @@
 # limitations under the License.
 #
 
-default['emacs']['24'] = false
+default['emacs']['install24'] = false
 
 case node['platform']
 when 'ubuntu','debian'
-  if node['emacs']['24']
+  if node['emacs']['install24']
     default['emacs']['packages'] = ['emacs24-nox']
   else
     default['emacs']['packages'] = ['emacs23-nox']
