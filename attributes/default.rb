@@ -32,3 +32,5 @@ when 'freebsd'
 else
   default['emacs']['packages'] = ['emacs']
 end
+
+default['emacs']['elpa'] = []
