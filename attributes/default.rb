@@ -34,3 +34,4 @@ else
 end
 
 default['emacs']['elpa'] = []
+default['emacs']['elpa_dir'] = "/root/.emacs.d/elpa"

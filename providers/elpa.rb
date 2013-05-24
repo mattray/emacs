@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: emacs
-# Provider:: package
+# Provider:: elpa
 #
 # Copyright 2013, Opscode, Inc.
 #
@@ -29,6 +29,11 @@ action :add do
     Chef::Application.fatal!("emacs_package requires node['emacs']['install24'] to be true.")
   end
 
+  directory elpa_dir(new_resource.user, new_resource.directory) do
+    owner new_resource.user
+    recursive true
+  end
+
   # write out the .el file
   el_file = "(setq package-archives '("
   el_file += '("gnu" . "http://elpa.gnu.org/packages/")' if new_resource.elpa
@@ -54,11 +59,7 @@ action :add do
 end
 
 action :remove do
-  if new_resource.user == 'root'
-    Dir.chdir("/root/.emacs.d/elpa")
-  else
-    Dir.chdir("/home/#{new_resource.user}/.emacs.d/elpa")
-  end
+  Dir.chdir(elpa_dir(new_resource.user, new_resource.directory))
   # wildcard because version is unknown
   dir = Dir.glob("#{new_resource.package}*")
   unless dir.empty?
@@ -67,4 +68,12 @@ action :remove do
       action :delete
     end
   end
+end
+
+def elpa_dir(user,dir)
+  return dir if user.eql?('root') #whatever it is, return it
+  if dir.eql?('/root/.emacs.d/elpa') #assume want it changed
+    return "/home/#{user}/.emacs.d/elpa"
+  end
+  return dir
 end

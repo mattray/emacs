@@ -28,16 +28,12 @@ if node['emacs']['install24'] and node['platform'] == 'ubuntu'
 end
 
 node['emacs']['packages'].each do |pkg|
-
   package pkg do
     source "ports" if platform?('freebsd')
   end
-
 end
 
 node['emacs']['elpa'].each do |pkg|
-
-  emacs_package pkg do
+  emacs_elpa pkg do
   end
-
 end

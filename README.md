@@ -49,8 +49,8 @@ As this is an array you can append other emacs-related packages, such as to make
 Resources/Providers
 ===================
 
-Managing Packages
------------------
+Managing ELPA Packages
+----------------------
 
 This LWRP provides an easy way to manage additional [ELPA](http://www.emacswiki.org/emacs/ELPA) packages.
 
@@ -64,6 +64,7 @@ This LWRP provides an easy way to manage additional [ELPA](http://www.emacswiki.
 - package: name attribute. The name of the package to install
 - archive: URL to download packages from
 - user: the user to install packages for
+- directory: where to install the packages, default is `/root/.emacs.d/elpa` for `root` or `/home/USER/.emacs/elpa` for the `user` specified by the attribute
 - elpa: use the [GNU](http://elpa.gnu.org) repo from http://elpa.gnu.org/packages/ - value can be `true` or `false`, default `true`.
 - marmalade: use the [Marmalade](http://marmalade-repo.org) repo from http://marmalade-repo.org/packages/ - value can be `true` or `false`, default `false`.
 - melpa: use [Milkypostman’s Emacs Lisp Package Archive](http://melpa.milkbox.net) from http://melpa.milkbox.net/packages/ - value can be `true` or `false`, default `false`.
@@ -72,18 +73,18 @@ This LWRP provides an easy way to manage additional [ELPA](http://www.emacswiki.
 
 ```ruby
 #coffee-mode from elpa
-emacs_package "coffee-mode"
+emacs_elpa "coffee-mode"
 ```
 
 ```ruby
-emacs_package "ac-helm" do
+emacs_elpa "ac-helm" do
   melpa true
 end
 ```
 
 ```ruby
 #remove coffee-mode
-emacs_package "nostinkingcoffee" do
+emacs_elpa "nostinkingcoffee" do
   package "coffee-mode"
   action :remove
 end
@@ -93,6 +94,7 @@ License and Author
 ==================
 
 Author:: Joshua Timberman <joshua@opscode.com>
+Author:: Matt Ray <matt@opscode.com>
 
 Copyright:: 2009-2013, Opscode, Inc
 

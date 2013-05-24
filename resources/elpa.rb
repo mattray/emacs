@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: emacs
-# Resource:: package
+# Resource:: elpa
 #
 # Copyright 2013, Opscode, Inc.
 #
@@ -28,6 +28,7 @@ end
 attribute :package, :kind_of => String, :name_attribute => true
 attribute :archive, :kind_of => String
 attribute :user, :kind_of => String, :default => 'root'
+attribute :directory, :kind_of => String, :default => '/root/.emacs.d/elpa'
 attribute :elpa, :default => true
 attribute :marmalade, :default => false
 attribute :melpa, :default => false
