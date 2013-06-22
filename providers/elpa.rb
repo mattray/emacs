@@ -35,14 +35,15 @@ action :add do
   end
 
   # write out the .el file
-  el_file = "(setq package-archives '("
-  el_file += '("gnu" . "http://elpa.gnu.org/packages/")' if new_resource.elpa
-  el_file += '("marmalade" . "http://marmalade-repo.org/packages/")' if new_resource.marmalade
-  el_file += '("melpa" . "http://melpa.milkbox.net/packages/")' if new_resource.melpa
+  el_file = "(require 'package)\r"
+  el_file += "(package-initialize)\r"
+  el_file += "(setq package-archives '("
   el_file += "(\"custom\" . \"#{new_resource.archive}\")" if new_resource.archive
-  el_file += "))"
-  el_file += "(package-refresh-contents)"
-  el_file += "(package-install '#{new_resource.package})"
+  el_file += '("gnu" . "http://elpa.gnu.org/packages/")'
+  el_file += '("marmalade" . "http://marmalade-repo.org/packages/")'
+  el_file += '("melpa" . "http://melpa.milkbox.net/packages/")))'
+  el_file += "\r(package-refresh-contents)\r"
+  el_file += "(package-install '#{new_resource.package})\r"
 
   execute "emacs -batch -l #{Chef::Config[:file_cache_path]}/#{new_resource.package}.el" do
     user new_resource.user
