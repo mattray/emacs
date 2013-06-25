@@ -19,7 +19,7 @@ On FreeBSD, Chef version 0.10.6 is required for fixes to the ports package provi
 Attributes
 ==========
 
-* `node['emacs']['install24']` - Whether to use an upstream provider for Emacs 24, currently Ubuntu-only. Defaults to `false`.
+* `node['emacs']['install24']` - Whether to use an upstream provider for Emacs 24, currently Ubuntu-only. While Ubuntu 13.04 has emacs24 packages, the upstream provider has newer versions still. Defaults to `false`.
 * `node['emacs']['packages']` - An array of Emacs package names to install. Defaults to the "No X11" name based on platform and falls back to "emacs".
 
 Recipes
