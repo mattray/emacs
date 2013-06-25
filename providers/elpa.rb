@@ -45,7 +45,8 @@ action :add do
   el_file += "\r(package-refresh-contents)\r"
   el_file += "(package-install '#{new_resource.package})\r"
 
-  execute "emacs -batch -l #{Chef::Config[:file_cache_path]}/#{new_resource.package}.el" do
+  execute "installing #{new_resource.package}.el" do
+    command "emacs -batch -l #{Chef::Config[:file_cache_path]}/#{new_resource.package}.el"
     user new_resource.user
     action :nothing
   end
@@ -55,7 +56,7 @@ action :add do
     mode 00644
     content el_file
     action :create
-    notifies :run, "execute[emacs -batch -l #{Chef::Config[:file_cache_path]}/#{new_resource.package}.el]"
+    notifies :run, "execute[installing #{new_resource.package}.el]"
   end
 end
 
